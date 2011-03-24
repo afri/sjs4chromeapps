@@ -174,7 +174,4 @@ chrome.extension.__abort_from_remote = function(id) {
   $evalInTab(tabid, "
 require('__builtin:__sys').jsonp = chrome.extension.api.__jsonp;
 ");
-
-  // now inject content-main.sjs:
-  $evalInTab(tabid, "require('content-main').main();");
 }
