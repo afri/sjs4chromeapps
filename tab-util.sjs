@@ -6,6 +6,13 @@
 */
 
 //----------------------------------------------------------------------
+// set this to console.log or something else to get debug information:
+
+exports.log = function() {};
+
+function log(x) { exports.log('tab-util.sjs: '+x); }
+
+//----------------------------------------------------------------------
 // eval a piece of JS code in tab and return result
 
 var continuation_counter = Math.round(Math.random()*1e7);
@@ -73,6 +80,7 @@ chrome.extension.onRequest.addListener(function(req, sender, send_resp) {
     }
     else if (req.method && api[req.method]) {
       send_resp({result:api[req.method].apply(null, req.args)});
+      return;
     }
     else {
       throw "unexpected message";
@@ -80,8 +88,8 @@ chrome.extension.onRequest.addListener(function(req, sender, send_resp) {
     send_resp({result:"ok"});
   }
   catch (e) {
-    // XXX log, but where does it go?
-    send_resp({error:e.toString()});
+    log('Error: '+e);
+    try { send_resp({error:e.toString()}); } catch(e) {}
   }
 });
 
